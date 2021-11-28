@@ -1,0 +1,235 @@
+
+package currency.converter;
+
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+
+public class CurrencyConverter extends JFrame implements ActionListener {
+
+     private  Container container ;
+     private JLabel title;
+     private Font font,font2;
+     private JComboBox box;
+     private JTextField get;
+     private JTextArea area;
+     private JScrollPane pane;
+     private JButton Convert,Clear ;
+     
+     private final String[] money = {"BD to USD", "USD to BD","BD to Euro","Euro to BD", "USD to Euro","Euro to UAD","Found to Euro", "Euro to Found"};
+     CurrencyConverter(){
+       
+         
+         this.setBounds(300,200,500,400);
+         this.setTitle(" Currency Converter");
+        initComponents() ;
+         
+     }
+     
+     public void initComponents(){
+      
+      container = this.getContentPane();
+      container.setLayout(null);
+      container.setBackground(Color.darkGray);
+      
+      // caret Font Size
+      
+      font = new Font ("Arial",Font.BOLD,47);
+      font2 = new Font("Arial",Font.BOLD,24);
+      // title caret in Currency Converter Applicatin
+      
+      title = new JLabel ("Currency Converter");
+      title.setBounds(0,0,500,80);
+      title.setOpaque(true);
+      title.setBackground(Color.LIGHT_GRAY);
+      title.setForeground(Color.DARK_GRAY);
+      title.setFont(font);
+      title.setHorizontalAlignment(JLabel.CENTER);
+      container.add(title);
+      
+      // creat combo Box
+      box = new JComboBox(money) ;
+      box.setBounds(25,110,200,50);
+      box.setEditable(true);
+      box.setFont(font2);
+      container.add(box);
+      
+      //Caret Jtext Field 
+      get = new JTextField();
+      get.setBounds(25,180,200,50);
+      get.setFont(font2);
+      container.add(get);
+      
+      // Caret JTextArea
+      
+      area = new JTextArea();
+      area.setFont(font2);
+      area.setBackground(Color.LIGHT_GRAY);
+      area.setForeground(Color.DARK_GRAY);
+      area.setEditable(false);
+      // Creat JScrollPane 
+      
+      pane = new JScrollPane(area);
+      pane.setBounds(245,110,220,120);
+      container.add(pane);
+      
+      // creat JButton
+      Convert = new  JButton("Convert");
+      Convert.setFont(font);
+      Convert.setBounds(20,260,220,50);
+      Convert.setBackground(Color.LIGHT_GRAY);
+      Convert.setForeground(Color.DARK_GRAY);
+      container.add(Convert);
+      
+      Clear = new  JButton("Clear");
+      Clear.setFont(font);
+      Clear.setBounds(245,260,220,50);
+      Clear.setBackground(Color.LIGHT_GRAY);
+      Clear.setForeground(Color.DARK_GRAY);
+      container.add(Clear);
+     
+      Convert.addActionListener(this);
+      Clear.addActionListener(this);
+      get.addActionListener(this);
+      
+     }
+     
+     public void actionPerformed(ActionEvent e){
+         
+         if(e.getSource()==Convert){
+             try{
+                 SetCalculation();
+             } catch(Exception excep){
+               JOptionPane.showMessageDialog(null,excep+"Try Again","Error",JOptionPane.ERROR_MESSAGE);
+             }
+         }
+          if(e.getSource()==get){
+             try{
+                 SetCalculation();
+             } catch(Exception excep){
+               JOptionPane.showMessageDialog(null,excep+"Try Again","Error",JOptionPane.ERROR_MESSAGE);
+             }
+         }
+     }
+    public void  SetCalculation()
+    {
+        String s = box.getSelectedItem().toString();
+        DecimalFormat format = new DecimalFormat("0.00000");
+        
+        String d = get.getText();
+        
+        if(d.isEmpty()){
+            
+           JOptionPane.showMessageDialog(null,"Please Inter Any number","Error",JOptionPane.ERROR_MESSAGE); 
+        }
+        else{
+            if(s== money[0])
+            {
+                double BD = Double.valueOf(get.getText());
+               
+                double USD = BD * 0.01173;
+                
+                String area = String.valueOf(format.format(USD));
+                this.area.setText("$"+area);
+            }
+             else{
+            if(s== money[1])
+            {
+                double USD = Double.valueOf(get.getText());
+               
+                double BD = USD / 0.01173;
+                
+                String area = String.valueOf(format.format(BD));
+                this.area.setText(area+"Tk");
+            }
+            
+           else if(s== money[2])
+            {
+                double BD = Double.valueOf(get.getText());
+               
+                double Euro = BD * 0.01042;
+                
+                String area = String.valueOf(format.format(Euro));
+                this.area.setText(area+"Euro");
+            }
+            
+             else if(s== money[3])
+            {
+                double Euro = Double.valueOf(get.getText());
+               
+                double BD = Euro / 0.01042;
+                
+                String area = String.valueOf(format.format(BD));
+                this.area.setText(area+"Tk");
+            }
+            
+             else if(s== money[4])
+            {
+                double Euro = Double.valueOf(get.getText());
+               
+                double USD = Euro / 0.12457;
+                
+                String area = String.valueOf(format.format(USD));
+                this.area.setText(area+"Euro");
+            }
+             else if(s== money[5])
+            {
+                double USD = Double.valueOf(get.getText());
+               
+                double Euro = USD * 0.12457;
+                
+                String area = String.valueOf(format.format(Euro));
+                this.area.setText("$"+area);
+            }
+            
+             else if(s== money[6])
+            {
+                double Euro = Double.valueOf(get.getText());
+               
+                double Found = Euro * 1.29864;
+                
+                String area = String.valueOf(format.format(Found));
+                this.area.setText(area+"Euro");
+            }
+            
+             else if(s== money[7])
+            {
+                double Found = Double.valueOf(get.getText());
+               
+                double Euro = Found / 1.29864;
+                
+                String area = String.valueOf(format.format(Euro));
+                this.area.setText(area+"Found");
+            }
+        }
+           
+        }
+        
+        
+    }
+     
+    public static void main(String[] args) {
+       
+        CurrencyConverter Converter = new   CurrencyConverter () ;    
+        Converter.setVisible(true);
+        Converter.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+    }
+
+    }
+
+
+    
+
